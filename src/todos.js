@@ -1,9 +1,18 @@
 export default class todos{
-    constructor(title, description, dueDate, priority){
+    constructor(title, description, dueDate, status, priority){
         this.title = title;
         this.description = description;
         this.dueDate = dueDate;
+        this.status = status;
         this.priority = priority;
+    }
+
+    changeStatus(){
+        this.status = !this.status;
+    }
+
+    changePriority(n){
+        this.priority = n;
     }
 }
 
