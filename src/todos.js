@@ -1,3 +1,5 @@
+import { projects } from "./projects";
+
 export default class todos{
     constructor(title, description, dueDate, status, priority){
         this.title = title;
@@ -7,9 +9,18 @@ export default class todos{
         this.priority = priority;
     }
 
-    changeStatus(){
-        this.status = !this.status;
-    }
+    // changeStatus(projectName, todo){
+    //     // this.status = !this.status;
+    //     if(projects.allProjects[projectName]){
+    //         projects.allProjects[projectName] = projects.allProjects[projectName].filter((td) => {
+    //             if(td.title == todo){
+    //                 td.status = !td.status;
+    //             }
+    //         });
+    //     }
+    //     projects.printProject(projectName);
+    //     console.log(projects.allProjects);
+    // }
 
     changePriority(n){
         this.priority = n;
