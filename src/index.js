@@ -1,54 +1,66 @@
 import './style.css';
-import todos from './todos.js';
 import populateContent from './DOM.js';
 import { projects } from './projects.js';
+import todos from './todos.js';
+import { PubSub } from './PubSub.js';
+import { format } from 'date-fns';
 
-console.log("ToDo-List")
+const form = document.querySelector('#fo');
+const addnew = document.querySelector('#adder');
+const dialog = document.querySelector("dialog");
+const showButton = document.querySelector("#addnew");
+const closeButton = document.querySelector("#close");
 
-const p1 = "projectOne";
-const p2 = "projectTwo";
+addnew.addEventListener("click", () => {
+    // console.log('hi')
+    // event.preventDefault();
+    // form.reset();
+    // dialog.close();
+    NewTodo();
+})
 
-const t1 = new todos("one","first","1/1/2001", false, 1);
-const t2 = new todos("two","second","2/2/2002", false, 2);
-const t3 = new todos("three","third","3/3/2003", false, 3);
-// const t4 = new todos("four","fourth","4/4/2004", true, 3);
+showButton.addEventListener("click", () => {
+    dialog.showModal();
+});
 
-projects.createProject(p1, t1);
-projects.createProject(p1, t2);
-projects.createProject(p1, t3);
+closeButton.addEventListener("click", () => {
+    event.preventDefault();
+    form.reset();
+    dialog.close();
+});
 
-// projects.createProject(p2, t4);
+function NewTodo(){
+    let newArr = [];
+    const projectName = document.getElementById('projectname');
+    const title = document.getElementById('title');
+    const description = document.getElementById('description');
+    const dueDate = document.getElementById('duedate');
+    const progress1 = document.getElementById('one').checked; 
+    const progress2 = document.getElementById('two').checked; 
+    const progress3 = document.getElementById('three').checked;
+    let prog = 0;
+    if(progress1){
+        prog = 1;
+    }
+    else if(progress2){
+        prog = 2;
+    }
+    else{
+        prog = 3;
+    }
+    
+    const d = new Date();
+    const dc = format(d, "yyyy-MM-dd")
+    const checkdue = dueDate.value>=dc;
+    // console.log(projectName.value, title.value, description.value, dueDate.value, checkdue, prog)
+    // console.log('hi new')
+    newArr = [projectName.value, title.value, description.value, dueDate.value, false, prog];
+    // console.log(newArr)
+    PubSub.Publish("creatingTodos", newArr);
+    event.preventDefault();
+    form.reset();
+    dialog.close();
+}
 
-// projects.removeTodo(p1,t1);
-// projects.removeTodo(p1,t2);
-// projects.removeTodo(p1,t3);
-
-// projects.printTodos(p1);
-
-
-populateContent(p1);
-
-// function removeCard(event){
-//     console.log(event.target.id)
-// }
-
-// document.querySelector(".listitems").addEventListener('click', function(event){
-//     if(event.target.classList.contains('btn')){
-//         removeCard(event);
-//     }
-// })
-
-// t1.changeStatus();
-// t1.changePriority(3);
-
-// projects.printTodos(p1);
-
-// projects.removeTodo(p1,t1);
-// projects.removeTodo(p1,t2);
-
-projects.printTodos(p1);
-
-// const dateSample = format(new Date(2010, 1, 14), "MMM-dd-yyyy");
-
-// console.log(dateSample);
-// projects.printTodos(p2);
+let arr = ["projectOne", "one","first","1/1/2001", false, 1];
+PubSub.Publish("creatingTodos", arr);

@@ -1,32 +1,17 @@
-import { projects } from "./projects";
+import { PubSub } from './PubSub.js';
 
-export default class todos{
-    constructor(title, description, dueDate, status, priority){
-        this.title = title;
-        this.description = description;
-        this.dueDate = dueDate;
-        this.status = status;
-        this.priority = priority;
-    }
+function todoFact(arr){
+    const objTodo = {};
+    objTodo['project'] = arr[0];
+    objTodo['title'] = arr[1];
+    objTodo['description'] = arr[2];
+    objTodo['dueDate'] = arr[3];
+    objTodo['progress'] = arr[4];
+    objTodo['priority'] = arr[5];
 
-    // changeStatus(projectName, todo){
-    //     // this.status = !this.status;
-    //     if(projects.allProjects[projectName]){
-    //         projects.allProjects[projectName] = projects.allProjects[projectName].filter((td) => {
-    //             if(td.title == todo){
-    //                 td.status = !td.status;
-    //             }
-    //         });
-    //     }
-    //     projects.printProject(projectName);
-    //     console.log(projects.allProjects);
-    // }
+    const arr1 = [objTodo['project'], objTodo]
 
-    changePriority(n){
-        this.priority = n;
-    }
+    PubSub.Publish("creatingProjects", arr1);
 }
 
-// const t1 = new todos("bath", "to Take bath", "1/7/24", 1);
-
-// console.log(t1);
+PubSub.Subscribe("creatingTodos", todoFact);
