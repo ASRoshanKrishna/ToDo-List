@@ -11,11 +11,23 @@ function del(elid, elValue){
 
 function chStatus(projectName, todo){
     const arr = [projectName, todo];
-    console.log(projectName, todo)
     PubSub.Publish("changingStatus", arr);
+    // event.preventDefault();
+    // console.log(projectName, todo)
 }
 
 function cleanDOM(itemSection){
+    const old_element = document.querySelectorAll(".check");
+    // console.log(old_element)
+    if(old_element){
+        old_element.forEach((el) => {
+            // console.log(el)
+            const new_element = el.cloneNode(true);
+            el.parentNode.replaceChild(new_element, el); 
+        })
+        // const new_element = old_element.cloneNode(true);
+        // old_element.parentNode.replaceChild(new_element, old_element);
+    }
     while(itemSection.firstChild){
         itemSection.removeChild(itemSection.firstChild);
     }
@@ -41,27 +53,38 @@ function populateContentinDOM(element){
     card.innerHTML = values;
     itemSection.appendChild(card);
 
-    const elecheck = document.querySelectorAll(".check");
-    elecheck.forEach((el) =>{
-        el.addEventListener('click', function(){
-            chStatus(el.id, el.value);
-            // console.log(el.id, el.value);
-        });
-    })
+    // const elecheck = document.querySelectorAll(".check");
+    // elecheck.forEach((el) =>{
+    //     el.addEventListener('change', function(){
+    //         chStatus(el.id, el.value);
+    //         // console.log(el.id, el.value);
+    //         event.preventDefault();
+    //     });
+        
+    // })
 
-    const elebtn = document.querySelectorAll(".btn");
-    elebtn.forEach((el) =>{
-        el.addEventListener('click', function(){
-            del(el.id, el.value);
-            // console.log(el.id, el.value);
-        });
-    })
+    // const elebtn = document.querySelectorAll(".btn");
+    // elebtn.forEach((el) =>{
+    //     el.addEventListener('click', function(){
+    //         del(el.id, el.value);
+    //         // console.log(el.id, el.value);
+    //     });
+    // })
 }
 
+itemSection.addEventListener('click', function(event){
+    if(event.target && event.target.classList.contains('btn')){
+        del(event.target.id, event.target.value);
+    }
+})
 
 
-
-
+itemSection.addEventListener('change', function(event){
+    if(event.target && event.target.classList.contains('check')){
+        // console.log(event.target.id, event.target.value);
+        chStatus(event.target.id, event.target.value);
+    }
+})
 
 
 PubSub.Subscribe("printingTodos", populateContentinDOM);

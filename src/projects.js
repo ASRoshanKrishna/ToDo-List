@@ -34,13 +34,16 @@ const projects = {
         // console.log(projectName, todo);
         const pjName = arr[0];
         const tdName = arr[1];
+        console.log(`changing progress of ${tdName} from project ${pjName}`);
         projects.allProjects[pjName].forEach((td) =>{
             if(td.title==tdName){
                 console.log(td.title, td.progress);
                 td.progress = !td.progress;
                 console.log(td.title, td.progress);
+                event.preventDefault();
             }
         })
+        event.preventDefault();
         projects.printTodos(pjName);
         console.log(projects.allProjects);
     },
@@ -52,9 +55,11 @@ const projects = {
     printTodos(projectName){
         const itemSection = document.querySelector(".listitems");
         PubSub.Publish("cleaningDOM",itemSection);
+        // event.preventDefault();
         if(projects.allProjects[projectName]){
             projects.allProjects[projectName].forEach(element => {
                 PubSub.Publish("printingTodos", element);
+                // event.preventDefault();
             })
         }
     },
