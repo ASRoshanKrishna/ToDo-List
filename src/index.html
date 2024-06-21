@@ -11,45 +11,54 @@
     </header>
     <div class="content">
         <div class="sidebar">
+            <ul class="projectlist">
+                
+            </ul>
             <button id="addnew">ADD</button>
         </div>
         <div class="listitems">
             
         </div>
     </div>
-    <dialog>
+    <dialog id="addDialog">
         <form id="fo">
             <h2>Create new To Do</h2>
             <div class="input1">
             <label for="projectname">Project</label>
-            <input type="text" id="projectname" value="General">
+            <input type="text" id="projectname" value="projectOne" required>
             </div>
             <div class="input2">
             <label for="title">Title</label>
-            <input type="text" id="title" placeholder="Do Math">
+            <input type="text" id="title" placeholder="Do Math" required>
             </div>
             <div class="input3">
             <label for="description">Description</label>
-            <textarea id="description" name="Text1" cols="40" rows="5"></textarea>
+            <textarea id="description" name="Text1" cols="40" rows="5" required></textarea>
             </div>
             <div class="input4">
             <label for="duedate">Due Date</label>
-            <input type="date" id="duedate">
+            <input type="date" id="duedate" required>
             </div>
             <div class="input5">
             <label>Priority</label>
             <label for="one">1</label>
-            <input type="radio" id="one" name="Priority">
+            <input type="radio" id="one" name="Priority" required>
             <label for="two">2</label>
-            <input type="radio" id="two" name="Priority">
+            <input type="radio" id="two" name="Priority" required>
             <label for="three">3</label>
-            <input type="radio" id="three" name="Priority">
+            <input type="radio" id="three" name="Priority" required>
             </div>
             <div class="buttons">
             <button id="adder" type="submit">ADD ToDo</button>
             <button id="close" autofocus>Close</button>
             </div>
         </form>
+    </dialog>
+    <dialog id="detailDialog">
+        <div class="detailDiv">
+            
+        </div>
+        <button id="detailClose" autofocus>Close</button>
     </dialog>
 </body>
 </html>

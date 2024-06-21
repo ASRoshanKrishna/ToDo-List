@@ -40,6 +40,20 @@ form{
 .sidebar{
     grid-column: 1;
     background-color: aliceblue;
+    display: flex;
+    justify-content: center;
+    gap: 6rem;
+}
+
+.sidebar ul{
+    font-size: larger;   
+    list-style: none;
+}
+
+#addnew{
+    position: absolute;
+    bottom: 15px;
+    left: 10px;
 }
 
 .listitems{

@@ -1,11 +1,10 @@
 import { PubSub } from "./PubSub.js";
 
+const itemSection = document.querySelector(".listitems");
+const projectSection = document.querySelector('.projectlist');
+
 const projects = {
     allProjects: {},
-
-    // printProject(projectName){
-    //     populateContent(projectName);
-    // },
 
     createProject(arr){
         const projectName = arr[0];
@@ -14,7 +13,6 @@ const projects = {
         projects.allProjects[projectName] = projects.allProjects[projectName] || [];
         projects.allProjects[projectName].push(todo);
         console.log(projects.allProjects);
-        // projects.consoleTodos(projectName);
         projects.printTodos(projectName);
     },
 
@@ -30,8 +28,6 @@ const projects = {
     },
 
     changeStatus(arr){
-        // todos.changeStatus(elclass, elvalue);
-        // console.log(projectName, todo);
         const pjName = arr[0];
         const tdName = arr[1];
         console.log(`changing progress of ${tdName} from project ${pjName}`);
@@ -48,20 +44,50 @@ const projects = {
         console.log(projects.allProjects);
     },
 
+    getDetails(arr){
+        // console.log(arr);
+        const a = arr[0];
+        const b = arr[1];
+        // console.log(a,b)
+        // console.log(projects.allProjects[a])
+        projects.allProjects[a].forEach(element => {
+            if(element.title == b){
+                const arr1 = [element.project, element.title, element.description, element.dueDate, element.priority];
+                // console.log(arr1);
+                PubSub.Publish("sendingDetails", arr1);
+                return;
+            }
+        })
+    },
+
     changePriority(n){
         this.priority = n;
     },
 
     printTodos(projectName){
-        const itemSection = document.querySelector(".listitems");
         PubSub.Publish("cleaningDOM",itemSection);
-        // event.preventDefault();
+        PubSub.Publish("cleaningDOM", projectSection);
+        console.log(projects.allProjects[projectName])
+        console.log(projects.allProjects)
         if(projects.allProjects[projectName]){
             projects.allProjects[projectName].forEach(element => {
                 PubSub.Publish("printingTodos", element);
-                // event.preventDefault();
             })
+            PubSub.Publish("printingProjects", projectSection);
         }
+    },
+
+    printProjects(projectSection){
+        Object.keys(projects.allProjects).forEach(key => {
+            if(Object.keys(projects.allProjects[key]).length){
+                const projli = document.createElement('li');
+                projli.classList.add(`${key}`);
+                projli.id = "projectli";
+                // projli.classList.add('projectli');
+                projli.innerHTML = key;
+                projectSection.append(projli);
+            }
+        });    
     },
     
     consoleTodos(projectName){
@@ -79,3 +105,6 @@ const projects = {
 PubSub.Subscribe("creatingProjects", projects.createProject);
 PubSub.Subscribe("removingTodos", projects.removeTodo);
 PubSub.Subscribe("changingStatus", projects.changeStatus);
+PubSub.Subscribe("printingProjects", projects.printProjects);
+PubSub.Subscribe("callPrintTodos", projects.printTodos);
+PubSub.Subscribe("gettingDetails", projects.getDetails);
