@@ -208,20 +208,32 @@ function populateContentinDOM(element){
     console.log(ele);
     const card = document.createElement('div');
     card.classList.add('card');
-    let values = `<p>${element.priority}</p>
+    if(element.priority == 1){
+        card.classList.add('high');
+    }
+    if(element.priority == 2){
+        card.classList.add('medium');
+    }
+    else if(element.priority == 3){
+        card.classList.add('low');
+    }
+    let values = `<div>
                 <input class="check" id="${projectName}" value="${ele}" type="checkbox" ${box}>
                 <label>${element.title}</label>
+                </div>
+                <div>
+                <span>${mmdd}</span>
+                <button class="edit btn" id="${projectName}" value="${ele}"><i class="fa fa-edit"></i></button>
+                <button class="rmv btn" id="${projectName}" value="${ele}" type="button"><i class="fa fa-trash"></i></button>
                 <button class="details" id="${projectName}" value="${ele}">Details</button>
-                <p>${mmdd}</p>
-                <button class="edit" id="${projectName}" value="${ele}">Edit</button>
-                <button class="btn" id="${projectName}" value="${ele}" type="button">Remove</button>`;
+                </div>`;
 
     card.innerHTML = values;
     itemSection.appendChild(card);
 }
 
 itemSection.addEventListener('click', function(event){
-    if(event.target && event.target.classList.contains('btn')){
+    if(event.target && event.target.classList.contains('rmv')){
         del(event.target.id, event.target.value);
     }
 })
