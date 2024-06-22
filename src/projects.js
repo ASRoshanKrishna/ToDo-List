@@ -46,16 +46,47 @@ const projects = {
 
     getDetails(arr){
         // console.log(arr);
-        const a = arr[0];
-        const b = arr[1];
+        const pjName = arr[0];
+        const tdName = arr[1];
         // console.log(a,b)
         // console.log(projects.allProjects[a])
-        projects.allProjects[a].forEach(element => {
-            if(element.title == b){
+        projects.allProjects[pjName].forEach(element => {
+            if(element.title == tdName){
                 const arr1 = [element.project, element.title, element.description, element.dueDate, element.priority];
                 // console.log(arr1);
                 PubSub.Publish("sendingDetails", arr1);
                 return;
+            }
+        })
+    },
+
+    getEdits(arr){
+        // console.log(arr)
+        const pjName = arr[0];
+        const tdName = arr[1];
+        projects.allProjects[pjName].forEach(element => {
+            if(element.title == tdName){
+                const arr1 = [element.project, element.title, element.description, element.dueDate, element.priority];
+                // console.log(arr1);
+                PubSub.Publish("sendingEdits", arr1);
+                return;
+            }
+        })
+    },
+
+    editTodos(arr){
+        const pjName = arr[0];
+        const tdName = arr[1];
+        // console.log(pjName, tdName);
+        projects.allProjects[pjName].forEach(element => {
+            if(element.title == tdName){
+                element.project = arr[2];
+                element.title = arr[3];
+                element.description = arr[4];
+                element.dueDate = arr[5];
+                element.priority = arr[7];
+                // console.log(element);
+                projects.printTodos(element.project);
             }
         })
     },
@@ -73,7 +104,7 @@ const projects = {
             projects.allProjects[projectName].forEach(element => {
                 PubSub.Publish("printingTodos", element);
             })
-            PubSub.Publish("printingProjects", projectSection);
+            projects.printProjects(projectSection);
         }
     },
 
@@ -105,6 +136,7 @@ const projects = {
 PubSub.Subscribe("creatingProjects", projects.createProject);
 PubSub.Subscribe("removingTodos", projects.removeTodo);
 PubSub.Subscribe("changingStatus", projects.changeStatus);
-PubSub.Subscribe("printingProjects", projects.printProjects);
 PubSub.Subscribe("callPrintTodos", projects.printTodos);
 PubSub.Subscribe("gettingDetails", projects.getDetails);
+PubSub.Subscribe("gettingEdits", projects.getEdits);
+PubSub.Subscribe("editingTodos", projects.editTodos);

@@ -33,6 +33,21 @@ detailClose.addEventListener('click', () => {
     detailbtn.close();
 });
 
+const editbtn = document.querySelector('#editDialog');
+const editDiv = document.querySelector('.editDiv');
+const editAdd = document.querySelector('#editAdder');
+const editClose = document.querySelector('#editClose');
+
+editAdd.addEventListener("click", () => {
+    editTodo();
+})
+
+editClose.addEventListener('click', () => {
+    event.preventDefault();
+    editbtn.close();
+});
+
+
 function NewTodo(){
     let newArr = [];
     const projectName = document.getElementById('projectname');
@@ -42,7 +57,7 @@ function NewTodo(){
     const progress1 = document.getElementById('one').checked; 
     const progress2 = document.getElementById('two').checked; 
     const progress3 = document.getElementById('three').checked;
-    let prog = 0;
+    let prog;
     if(progress1){
         prog = 1;
     }
@@ -86,6 +101,84 @@ function details(projectName, todo){
     PubSub.Publish("gettingDetails", arr);
 }
 
+function edit(projectName, todo){
+    const arr = [projectName, todo];
+    // console.log(arr)
+    PubSub.Publish("gettingEdits", arr);
+}
+
+function printEdits(arr){
+    console.log(arr);
+    let editContent = `<h2>Create new To Do</h2>
+                    <div class="input1">
+                    <label for="projectname">Project</label>
+                    <input type="text" class="${arr[0]}" id="editprojectname" value="${arr[0]}" readonly>
+                    </div>
+                    <div class="input2">
+                    <label for="title">Title</label>
+                    <input type="text" class="${arr[1]}" id="edittitle" value="${arr[1]}" required>
+                    </div>
+                    <div class="input3">
+                    <label for="description">Description</label>
+                    <textarea id="editdescription" name="Text1" cols="40" rows="5" required>${arr[2]}</textarea>
+                    </div>
+                    <div class="input4">
+                    <label for="duedate">Due Date</label>
+                    <input type="date" id="editduedate" value="${arr[3]}" required>
+                    </div>
+                    <div class="input5">
+                    <label>Priority</label>
+                    <label for="editone">1</label>
+                    <input type="radio" id="editone" name="Priority" required>
+                    <label for="edittwo">2</label>
+                    <input type="radio" id="edittwo" name="Priority" required>
+                    <label for="editthree">3</label>
+                    <input type="radio" id="editthree" name="Priority" required>
+                    </div>`;
+    editDiv.innerHTML = editContent;
+    editbtn.showModal();
+}
+
+function editTodo(){
+    let newArr = [];
+    const projectName = document.getElementById('editprojectname');
+    const title = document.getElementById('edittitle');
+    const description = document.getElementById('editdescription');
+    const dueDate = document.getElementById('editduedate');
+    const progress1 = document.getElementById('editone').checked; 
+    const progress2 = document.getElementById('edittwo').checked; 
+    const progress3 = document.getElementById('editthree').checked;
+    let prog;
+    if(progress1){
+        prog = 1;
+    }
+    else if(progress2){
+        prog = 2;
+    }
+    else if(progress3){
+        prog = 3;
+    }
+    
+    const d = new Date();
+    const dc = format(d, "yyyy-MM-dd")
+    const checkdue = dueDate.value>=dc;
+    // newArr = [projectName.className, title.className, projectName.value, title.value, description.value, dueDate.value, false, prog];
+    // console.log(newArr)
+    if(projectName.value && title.value && description.value && dueDate.value && prog){
+        if(checkdue==false){
+            alert("You cannot create a ToDo for the past!!")
+            event.preventDefault();
+        }
+        else{
+            newArr = [projectName.className, title.className, projectName.value, title.value, description.value, dueDate.value, false, prog];
+            console.log(newArr)
+            PubSub.Publish("editingTodos", newArr);
+            event.preventDefault();
+            editbtn.close();
+        }
+    }
+}
+
 function printDetails(arr){
     let detailContent = `<p>Project: ${arr[0]}</p>
                         <p>Title: ${arr[1]}</p>
@@ -108,7 +201,8 @@ function cleanDOM(itemSection){
 function populateContentinDOM(element){
     let projectName = element.project;
     let ele = element.title;
-    let mmdd = format(element.dueDate, "MMM Qo");
+    let mmdd = format(element.dueDate, "MMM-do");
+    console.log(mmdd)
     let box = 'unchecked';
     if(element.progress == true) box = 'checked';
     console.log(ele);
@@ -117,9 +211,9 @@ function populateContentinDOM(element){
     let values = `<p>${element.priority}</p>
                 <input class="check" id="${projectName}" value="${ele}" type="checkbox" ${box}>
                 <label>${element.title}</label>
-                <p>${element.description}</p>
                 <button class="details" id="${projectName}" value="${ele}">Details</button>
                 <p>${mmdd}</p>
+                <button class="edit" id="${projectName}" value="${ele}">Edit</button>
                 <button class="btn" id="${projectName}" value="${ele}" type="button">Remove</button>`;
 
     card.innerHTML = values;
@@ -147,6 +241,13 @@ itemSection.addEventListener('click', function(event){
     }
 })
 
+itemSection.addEventListener('click', function(event){
+    if(event.target && event.target.classList.contains('edit')){
+        // console.log(`Editing ${event.target.value}`);
+        edit(event.target.id, event.target.value);
+    }
+})
+
 
 projectSection.addEventListener('click', function(event){
     if(event.target && event.target.id == "projectli"){
@@ -160,3 +261,4 @@ projectSection.addEventListener('click', function(event){
 PubSub.Subscribe("printingTodos", populateContentinDOM);
 PubSub.Subscribe("cleaningDOM", cleanDOM);
 PubSub.Subscribe("sendingDetails", printDetails);
+PubSub.Subscribe("sendingEdits", printEdits);
