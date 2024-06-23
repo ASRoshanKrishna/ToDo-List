@@ -1,6 +1,6 @@
 import { PubSub } from "./PubSub.js";
 
-const itemSection = document.querySelector(".listitems");
+const itemSection = document.querySelector(".todonames");
 const projectSection = document.querySelector('.projectlist');
 
 const projects = {
@@ -25,6 +25,18 @@ const projects = {
         }
         projects.printTodos(pjName);
         console.log(projects.allProjects);
+    },
+
+    removeProject(element){
+        // console.log(element)
+        let prevProj;
+        Object.keys(projects.allProjects).forEach((key) => {
+            if(key == element){
+                delete projects.allProjects[key];
+                projects.printTodos(prevProj);
+            }
+            prevProj = key;
+        })
     },
 
     changeStatus(arr){
@@ -111,12 +123,13 @@ const projects = {
     printProjects(projectSection){
         Object.keys(projects.allProjects).forEach(key => {
             if(Object.keys(projects.allProjects[key]).length){
-                const projli = document.createElement('li');
-                projli.classList.add(`${key}`);
-                projli.id = "projectli";
-                // projli.classList.add('projectli');
-                projli.innerHTML = key;
-                projectSection.append(projli);
+                // const projli = document.createElement('li');
+                // projli.classList.add(`${key}`);
+                // projli.id = "projectli";
+                // // projli.classList.add('projectli');
+                // projli.innerHTML = key;
+                // projectSection.append(projli);
+                PubSub.Publish("printingProjects", key);
             }
         });    
     },
@@ -140,3 +153,4 @@ PubSub.Subscribe("callPrintTodos", projects.printTodos);
 PubSub.Subscribe("gettingDetails", projects.getDetails);
 PubSub.Subscribe("gettingEdits", projects.getEdits);
 PubSub.Subscribe("editingTodos", projects.editTodos);
+PubSub.Subscribe("removingProjects", projects.removeProject);

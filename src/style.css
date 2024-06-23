@@ -39,15 +39,47 @@ form{
 
 .sidebar{
     grid-column: 1;
+    /* display: flex;
+    flex-direction: ; */
     background-color: aliceblue;
-    display: flex;
-    justify-content: center;
-    gap: 6rem;
+}
+
+.sidebar h2{
+    margin: 1rem;
+    margin-left: 2rem;
+    font-size: 30px;
 }
 
 .sidebar ul{
-    font-size: larger;   
+    font-size: 25px; 
+    font-weight: 500;
     list-style: none;
+}
+
+.sidebar ul li{
+    margin-right: 1rem;
+    margin-bottom: 1rem;
+    display: flex;
+    justify-content: space-between;
+}
+ 
+.btn1{
+    font-size: 21px;
+    background-color: transparent;
+    outline: none;
+    border: none;
+    color: #34d399;
+    display: none;
+}
+
+.sidebar ul li:hover{
+    font-size: 30px;
+    color: #34d399;
+}
+
+.sidebar ul li:hover .btn1, .btn1:hover{
+    display: inline-block;
+    cursor: pointer;
 }
 
 #addnew{
@@ -58,8 +90,20 @@ form{
 
 .listitems{
     grid-column: 2;
+    grid-template-rows: 1fr 4fr;
     background-color: #f9fafb;
-    padding: 15px;
+    /* padding: 15px; */
+}
+
+.todotitle{
+    grid-row: 1;
+    padding-top: 1rem;
+    padding-left: 1rem;
+    font-size: 23px;
+}
+
+.todonames{
+    grid-row: 2;
 }
 
 .card{
@@ -99,15 +143,15 @@ input[type='checkbox'] {
 }
 
 .high{
-    border-left: 10px solid #dc2626;
+    border-left: 13px solid #dc2626;
 }
 
 .medium{
-    border-left: 10px solid #fde047;
+    border-left: 13px solid #fde047;
 }
 
 .low{
-    border-left: 10px solid #22c55e;
+    border-left: 13px solid #22c55e;
 }
 
 .details{
@@ -131,4 +175,5 @@ input[type='checkbox'] {
 
 .btn:hover{
     color: #34d399;
+    cursor: pointer;
 }

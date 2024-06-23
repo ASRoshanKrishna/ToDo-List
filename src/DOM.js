@@ -6,7 +6,7 @@ const addnew = document.querySelector('#adder');
 const dialog = document.querySelector("#addDialog");
 const showButton = document.querySelector("#addnew");
 const closeButton = document.querySelector("#close");
-const itemSection = document.querySelector(".listitems");
+const itemSection = document.querySelector(".todonames");
 const projectSection = document.querySelector('.projectlist');
 
 addnew.addEventListener("click", () => {
@@ -223,13 +223,22 @@ function populateContentinDOM(element){
                 </div>
                 <div>
                 <span>${mmdd}</span>
-                <button class="edit btn" id="${projectName}" value="${ele}"><i class="fa fa-edit"></i></button>
-                <button class="rmv btn" id="${projectName}" value="${ele}" type="button"><i class="fa fa-trash"></i></button>
+                <button class="edit btn" id="${projectName}" value="${ele}"><i id="edit" class="fa fa-edit"></i></button>
+                <button class="rmv btn" id="${projectName}" value="${ele}" type="button"><i id="rmv" class="fa fa-trash"></i></button>
                 <button class="details" id="${projectName}" value="${ele}">Details</button>
                 </div>`;
 
     card.innerHTML = values;
     itemSection.appendChild(card);
+}
+
+function populateProjects(key){
+    const projli = document.createElement('li');
+    projli.classList.add(`${key}`);
+    projli.id = "projectli";
+    // projli.classList.add('projectli');
+    projli.innerHTML = `${key} <button class="rmv btn1" id="${key}" type="button"><i id="rmvp" class="fa fa-trash"></i></button>`;
+    projectSection.append(projli);
 }
 
 itemSection.addEventListener('click', function(event){
@@ -238,6 +247,17 @@ itemSection.addEventListener('click', function(event){
     }
 })
 
+itemSection.addEventListener('click', function(event){
+    if(event.target && event.target.id == 'rmv'){
+        del(event.target.parentNode.id, event.target.parentNode.value);
+    }
+})
+
+itemSection.addEventListener('click', function(event){
+    if(event.target && event.target.id == 'edit'){
+        edit(event.target.parentNode.id, event.target.parentNode.value);
+    }
+})
 
 itemSection.addEventListener('change', function(event){
     if(event.target && event.target.classList.contains('check')){
@@ -248,7 +268,6 @@ itemSection.addEventListener('change', function(event){
 
 itemSection.addEventListener('click', function(event){
     if(event.target && event.target.classList.contains('details')){
-        // console.log(`details of ${event.target.value}`);
         details(event.target.id, event.target.value);
     }
 })
@@ -265,12 +284,18 @@ projectSection.addEventListener('click', function(event){
     if(event.target && event.target.id == "projectli"){
         PubSub.Publish("callPrintTodos", event.target.className);
     }
-    // PubSub.Publish("callPrintTodos", event.target.className);
-    // console.log(event.target.className, event.target.id);
+})
+
+projectSection.addEventListener('click', function(event){
+    if(event.target && event.target.id == 'rmvp'){
+        // console.log(event.target.parentNode.id);
+        PubSub.Publish("removingProjects", event.target.parentNode.id);
+    }
 })
 
 
 PubSub.Subscribe("printingTodos", populateContentinDOM);
+PubSub.Subscribe("printingProjects", populateProjects);
 PubSub.Subscribe("cleaningDOM", cleanDOM);
 PubSub.Subscribe("sendingDetails", printDetails);
 PubSub.Subscribe("sendingEdits", printEdits);
