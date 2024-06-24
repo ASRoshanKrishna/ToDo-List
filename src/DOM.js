@@ -109,25 +109,25 @@ function edit(projectName, todo){
 
 function printEdits(arr){
     console.log(arr);
-    let editContent = `<h2>Create new To Do</h2>
+    let editContent = `<h2>Editing the ToDo</h2>
                     <div class="input1">
-                    <label for="projectname">Project</label>
+                    <label for="projectname"><b>Project: </b></label>
                     <input type="text" class="${arr[0]}" id="editprojectname" value="${arr[0]}" readonly>
                     </div>
                     <div class="input2">
-                    <label for="title">Title</label>
+                    <label for="title"><b>Title: </b></label>
                     <input type="text" class="${arr[1]}" id="edittitle" value="${arr[1]}" required>
                     </div>
                     <div class="input3">
-                    <label for="description">Description</label>
-                    <textarea id="editdescription" name="Text1" cols="40" rows="5" required>${arr[2]}</textarea>
+                    <label for="description"><b>Description: </b></label>
+                    <textarea id="editdescription" name="Text1" rows="4" cols="30" required>${arr[2]}</textarea>
                     </div>
                     <div class="input4">
-                    <label for="duedate">Due Date</label>
+                    <label for="duedate"><b>Due Date: </b></label>
                     <input type="date" id="editduedate" value="${arr[3]}" required>
                     </div>
                     <div class="input5">
-                    <label>Priority</label>
+                    <label><b>Priority: </b></label>
                     <label for="editone">1</label>
                     <input type="radio" id="editone" name="Priority" required>
                     <label for="edittwo">2</label>
@@ -180,11 +180,11 @@ function editTodo(){
 }
 
 function printDetails(arr){
-    let detailContent = `<p>Project: ${arr[0]}</p>
-                        <p>Title: ${arr[1]}</p>
-                        <p>Description: ${arr[2]}</p>
-                        <p>DueDate: ${arr[3]}</p>
-                        <p>Priority: ${arr[4]}</p>`;
+    let detailContent = `<h2>${arr[1]}</h2>
+                        <p><b>Project:</b>  ${arr[0]}</p>
+                        <p><b>Description:</b>  ${arr[2]}</p>
+                        <p><b>DueDate:</b>  ${arr[3]}</p>
+                        <p><b>Priority:</b>  ${arr[4]}</p>`;
     detailDiv.innerHTML = detailContent;
     detailbtn.showModal();
     console.log(arr);
@@ -203,11 +203,14 @@ function populateContentinDOM(element){
     let ele = element.title;
     let mmdd = format(element.dueDate, "MMM-do");
     console.log(mmdd)
-    let box = 'unchecked';
-    if(element.progress == true) box = 'checked';
     console.log(ele);
+    let box = 'unchecked';
     const card = document.createElement('div');
     card.classList.add('card');
+    if(element.progress == true){
+         box = 'checked';
+         card.classList.add('line');
+    }
     if(element.priority == 1){
         card.classList.add('high');
     }
@@ -219,10 +222,10 @@ function populateContentinDOM(element){
     }
     let values = `<div>
                 <input class="check" id="${projectName}" value="${ele}" type="checkbox" ${box}>
-                <label>${element.title}</label>
+                ${element.title}
                 </div>
                 <div>
-                <span>${mmdd}</span>
+                ${mmdd}
                 <button class="edit btn" id="${projectName}" value="${ele}"><i id="edit" class="fa fa-edit"></i></button>
                 <button class="rmv btn" id="${projectName}" value="${ele}" type="button"><i id="rmv" class="fa fa-trash"></i></button>
                 <button class="details" id="${projectName}" value="${ele}">Details</button>
@@ -237,7 +240,7 @@ function populateProjects(key){
     projli.classList.add(`${key}`);
     projli.id = "projectli";
     // projli.classList.add('projectli');
-    projli.innerHTML = `${key} <button class="rmv btn1" id="${key}" type="button"><i id="rmvp" class="fa fa-trash"></i></button>`;
+    projli.innerHTML = `<span>${key}</span> <button class="rmv btn1" id="${key}" type="button"><i id="rmvp" class="fa fa-trash"></i></button>`;
     projectSection.append(projli);
 }
 

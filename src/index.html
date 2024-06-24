@@ -16,7 +16,7 @@
             <ul class="projectlist">
                 
             </ul>
-            <button id="addnew">ADD</button>
+            <button id="addnew"><i class="fa fa-plus"></i></button>
         </div>
         <div class="listitems">
             <div class="todotitle">
@@ -29,52 +29,48 @@
     </div>
     <dialog id="addDialog">
         <form id="fo">
+            <div class="newbtn"><button id="close" autofocus><i id="clsbtn" class="fa fa-close"></i></button></div>
             <h2>Create new To Do</h2>
             <div class="input1">
-            <label for="projectname">Project</label>
+            <label for="projectname"><b>Project: </b></label>
             <input type="text" id="projectname" value="projectOne" required>
             </div>
             <div class="input2">
-            <label for="title">Title</label>
+            <label for="title"><b>Title: </b></label>
             <input type="text" id="title" placeholder="Do Math" required>
             </div>
             <div class="input3">
-            <label for="description">Description</label>
-            <textarea id="description" name="Text1" cols="40" rows="5" required></textarea>
+            <label for="description"><b>Description: </b></label>
+            <textarea id="description" name="Text1" cols="30" rows="4" required></textarea>
             </div>
             <div class="input4">
-            <label for="duedate">Due Date</label>
+            <label for="duedate"><b>Due Date: </b></label>
             <input type="date" id="duedate" required>
             </div>
             <div class="input5">
-            <label>Priority</label>
-            <label for="one">1</label>
+            <label><b>Priority: </b></label>
+            <label for="one">High</label>
             <input type="radio" id="one" name="Priority" required>
-            <label for="two">2</label>
+            <label for="two"> Medium</label>
             <input type="radio" id="two" name="Priority" required>
-            <label for="three">3</label>
+            <label for="three"> Low</label>
             <input type="radio" id="three" name="Priority" required>
             </div>
-            <div class="buttons">
-            <button id="adder" type="submit">ADD ToDo</button>
-            <button id="close" autofocus>Close</button>
-            </div>
+            <button id="adder" type="submit"><h4>ADD ToDo</h4></button>
         </form>
     </dialog>
     <dialog id="detailDialog">
+        <div class="detailbtn"><button id="detailClose"><i id="clsbtn" class="fa fa-close"></i></button></div>
         <div class="detailDiv">
             
         </div>
-        <button id="detailClose" autofocus>Close</button>
     </dialog>
     <dialog id="editDialog">
+        <div class="editbtn"><button id="editClose"><i id="clsbtn" class="fa fa-close"></i></button></div>
         <div class="editDiv">
 
         </div>
-        <div class="buttons">
-            <button id="editAdder" type="submit">Edit ToDo</button>
-            <button id="editClose" autofocus>Close</button>
-        </div>
+        <button id="editAdder" type="submit"><h4>Edit ToDo</h4></button>
     </dialog>
 </body>
 </html>

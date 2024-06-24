@@ -21,11 +21,63 @@ header{
 
 dialog{
     margin: auto;
+    border-radius: 12px;
 }
-/* 
-form{
+
+input{
+    font-size: 20px;
+}
+
+#detailDialog,
+#editDialog,
+#addDialog{
+    font-size: 26px;
+    font-weight: 500;
+    padding-top: 0;
+    padding-right: 0;
+    min-width: 35rem;
+    overflow: fit-content;
+    border: none;
+    box-shadow: 12px 11px 20px -3px rgba(66, 68, 90, 1);
+}
+
+#detailDialog h2,
+#addDialog h2{
+    font-size: 45px;
+    margin-top: -2rem;
+    margin-bottom: 1rem;
+}
+
+#addDialog h2{
+    margin-top: -1rem;
+}
+
+#editDialog h2{
+    margin-bottom: 1em;
+}
+
+#detailDialog p,
+#editDialog div,
+#addDialog div{
+    margin-bottom: 0.5em;
+}
+
+#detailDialog div{
+    margin-bottom: 20px;
+}
+
+.newbtn,
+.detailbtn,
+.editbtn{
     display: flex;
-} */
+    justify-content: right;
+}
+
+#description,
+#editdescription{
+    vertical-align: top;
+    font-size: 20px;
+}
 
 ::backdrop{
     background-color: rgba(197, 205, 216, 0.6);
@@ -72,8 +124,12 @@ form{
     display: none;
 }
 
+.sidebar ul span:hover{
+    cursor: pointer;
+}
+
 .sidebar ul li:hover{
-    font-size: 30px;
+    font-size: 27px;
     color: #34d399;
 }
 
@@ -84,8 +140,24 @@ form{
 
 #addnew{
     position: absolute;
-    bottom: 15px;
-    left: 10px;
+    bottom: 3rem;
+    left: 3rem;
+    width: 4rem;
+    height: 4rem;
+    border-radius: 50%;
+    border: none;
+    outline: none;
+    background-color: #34d399;
+}
+
+#addnew:hover{
+    background-color: #f9fafb;
+    color: #34d399;
+    cursor: pointer;
+}
+
+#addnew i{
+    font-size: 2em;
 }
 
 .listitems{
@@ -111,9 +183,9 @@ form{
     justify-content: space-between;
     align-items: center;
     background-color: #e5e7eb;
-    font-size: medium;
-    width: 96%;
-    height: 65px;
+    font-size: 23px;
+    min-width: 36rem;
+    height: 4.5rem;
     margin: 1rem;
     font-weight: bold;
     border-radius: 5px;
@@ -124,6 +196,22 @@ input[type='checkbox'] {
     width: 20px;
     height: 20px;
     accent-color: #34d399;
+    cursor: pointer;
+}
+
+input[type='radio'] {
+    box-sizing: border-box;
+    appearance: none;
+    background: white;
+    outline: 2px solid #333;
+    border: 3px solid white;
+    width: 16px;
+    height: 16px;
+    cursor: pointer;
+}
+  
+input[type='radio']:checked {
+    background: #34d399;
 }
 
 .card:hover{
@@ -134,12 +222,10 @@ input[type='checkbox'] {
     margin: 8px;
 }
 
-.card label{
-    font-size: 24px;
-}
-
-.card span{
-    font-size: 20px;
+.line{
+    text-decoration: line-through;
+    opacity: 0.3;
+    color: #64748b;
 }
 
 .high{
@@ -154,26 +240,37 @@ input[type='checkbox'] {
     border-left: 13px solid #22c55e;
 }
 
-.details{
+.details,
+#editAdder,
+#adder{
     border: 2px solid #34d399;
     font-size: 18px;
     background-color: transparent;
     border-radius: 5px;
 }
 
-.details:hover{
+.details:hover,
+#editAdder:hover,
+#adder:hover{
     background-color: #34d399;
     color: white;
+    cursor: pointer;
 }
 
-.btn{
-    font-size: 21px;
+.btn,
+#detailClose,
+#editClose,
+#close{
+    font-size: 23px;
     background-color: transparent;
     outline: none;
     border: none;
 }
 
-.btn:hover{
+.btn:hover,
+#detailClose:hover,
+#editClose:hover,
+#close:hover{
     color: #34d399;
     cursor: pointer;
 }
