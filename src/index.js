@@ -5,7 +5,7 @@ import todos from './todos.js';
 import { format } from 'date-fns';
 import { PubSub } from './PubSub.js';
 
-let arr = ["projectOne", "one","first","2024-09-01", false, 1];
+let arr = ["projectOne", "one","first","2024-09-01", false, 'High'];
 PubSub.Publish("creatingTodos", arr);
-let arr1 = ["projectOne", "two","two","2001-11-02", false, 2];
+let arr1 = ["projectOne", "two","two","2024-11-02", false, 'Low'];
 PubSub.Publish("creatingTodos", arr1);

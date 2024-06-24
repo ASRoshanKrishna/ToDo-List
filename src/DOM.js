@@ -59,13 +59,13 @@ function NewTodo(){
     const progress3 = document.getElementById('three').checked;
     let prog;
     if(progress1){
-        prog = 1;
+        prog = 'High';
     }
     else if(progress2){
-        prog = 2;
+        prog = 'Medium';
     }
     else if(progress3){
-        prog = 3;
+        prog = 'Low';
     }
     
     const d = new Date();
@@ -74,7 +74,7 @@ function NewTodo(){
     if(projectName.value && title.value && description.value && dueDate.value && prog){
         if(checkdue==false){
             alert("You cannot create a ToDo for the past!!")
-            form.reset();
+            dueDate.value = "";
             NewTodo();
             return;
         }
@@ -128,11 +128,11 @@ function printEdits(arr){
                     </div>
                     <div class="input5">
                     <label><b>Priority: </b></label>
-                    <label for="editone">1</label>
+                    <label for="editone">High</label>
                     <input type="radio" id="editone" name="Priority" required>
-                    <label for="edittwo">2</label>
+                    <label for="edittwo"> Medium</label>
                     <input type="radio" id="edittwo" name="Priority" required>
-                    <label for="editthree">3</label>
+                    <label for="editthree"> Low</label>
                     <input type="radio" id="editthree" name="Priority" required>
                     </div>`;
     editDiv.innerHTML = editContent;
@@ -150,13 +150,13 @@ function editTodo(){
     const progress3 = document.getElementById('editthree').checked;
     let prog;
     if(progress1){
-        prog = 1;
+        prog = 'High';
     }
     else if(progress2){
-        prog = 2;
+        prog = 'Medium';
     }
     else if(progress3){
-        prog = 3;
+        prog = 'Low';
     }
     
     const d = new Date();
@@ -211,13 +211,13 @@ function populateContentinDOM(element){
          box = 'checked';
          card.classList.add('line');
     }
-    if(element.priority == 1){
+    if(element.priority == 'High'){
         card.classList.add('high');
     }
-    if(element.priority == 2){
+    if(element.priority == 'Medium'){
         card.classList.add('medium');
     }
-    else if(element.priority == 3){
+    else if(element.priority == 'Low'){
         card.classList.add('low');
     }
     let values = `<div>
@@ -238,9 +238,8 @@ function populateContentinDOM(element){
 function populateProjects(key){
     const projli = document.createElement('li');
     projli.classList.add(`${key}`);
-    projli.id = "projectli";
     // projli.classList.add('projectli');
-    projli.innerHTML = `<span>${key}</span> <button class="rmv btn1" id="${key}" type="button"><i id="rmvp" class="fa fa-trash"></i></button>`;
+    projli.innerHTML = `<span id="${key}" class="projectli">${key}</span> <button class="rmv btn1" id="${key}" type="button"><i id="rmvp" class="fa fa-trash"></i></button>`;
     projectSection.append(projli);
 }
 
@@ -284,8 +283,9 @@ itemSection.addEventListener('click', function(event){
 
 
 projectSection.addEventListener('click', function(event){
-    if(event.target && event.target.id == "projectli"){
-        PubSub.Publish("callPrintTodos", event.target.className);
+    if(event.target && event.target.classList.contains("projectli")){
+        // console.log(event.target.id)
+        PubSub.Publish("callPrintTodos", event.target.id);
     }
 })
 

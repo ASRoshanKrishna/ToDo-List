@@ -29,8 +29,9 @@ const projects = {
 
     removeProject(element){
         // console.log(element)
-        let prevProj;
+        let prevProj = "";
         Object.keys(projects.allProjects).forEach((key) => {
+            console.log(prevProj)
             if(key == element){
                 delete projects.allProjects[key];
                 projects.printTodos(prevProj);
@@ -101,10 +102,6 @@ const projects = {
                 projects.printTodos(element.project);
             }
         })
-    },
-
-    changePriority(n){
-        this.priority = n;
     },
 
     printTodos(projectName){
