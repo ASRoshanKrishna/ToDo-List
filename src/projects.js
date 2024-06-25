@@ -12,6 +12,7 @@ const projects = {
         console.log(`creating a project ${projectName} with todo ${todo.title}`);
         projects.allProjects[projectName] = projects.allProjects[projectName] || [];
         projects.allProjects[projectName].push(todo);
+        projects.changeallProjects();
         console.log(projects.allProjects);
         projects.printTodos(projectName);
     },
@@ -25,6 +26,7 @@ const projects = {
         }
         projects.printTodos(pjName);
         console.log(projects.allProjects);
+        projects.changeallProjects();
     },
 
     removeProject(element){
@@ -34,7 +36,13 @@ const projects = {
             console.log(prevProj)
             if(key == element){
                 delete projects.allProjects[key];
-                projects.printTodos(prevProj);
+                projects.changeallProjects();
+                if(prevProj == "") {
+                    projects.newPopulate();
+                }
+                else {
+                    projects.printTodos(prevProj);
+                }
             }
             prevProj = key;
         })
@@ -55,6 +63,7 @@ const projects = {
         event.preventDefault();
         projects.printTodos(pjName);
         console.log(projects.allProjects);
+        projects.changeallProjects();
     },
 
     getDetails(arr){
@@ -102,6 +111,7 @@ const projects = {
                 projects.printTodos(element.project);
             }
         })
+        projects.changeallProjects();
     },
 
     printTodos(projectName){
@@ -141,6 +151,58 @@ const projects = {
             console.log("emp");
         }
     },
+
+    sendJSON(dummy){
+        let arr = ["Welcome",
+        "Welcome!",
+        "To get started try selecting the default todo list provided on the left. Also + button is present on the bottom that you can use to create your own todos!",
+        "2030-01-01",
+        false, 
+        "Low"];
+
+        PubSub.Publish("creatingTodos", arr);
+
+        let arr1 = ["ToDo", 
+                "Complete your first task!",
+                "Once you've finished your first task you can click the checkbox next to the task to mark it as complete. A completed task will not be deleted unless you opt to.",
+                "2030-01-01",
+                false, 
+                "High"];
+
+        PubSub.Publish("creatingTodos", arr1);
+
+        let arr2 = ["ToDo",
+                "Editing tasks",
+                "You can also edit the todo using the edit icon next to it!",
+                "2030-01-01",
+                false,
+                "Medium"];
+
+        PubSub.Publish("creatingTodos", arr2);
+
+        // let allProjects_serialized = JSON.stringify(projects.allProjects);
+        // localStorage.setItem("allProjects", allProjects_serialized);
+        PubSub.Publish("callPrintTodos", arr[0]);
+        // PubSub.Publish("gettingJSON", 'dummy');
+    },
+
+    getJSON(dummy){
+        let allProjects_deserialized = JSON.parse(localStorage.getItem("allProjects"));
+        projects.allProjects = allProjects_deserialized;
+        console.log(projects.allProjects)
+        projects.newPopulate();
+    },
+
+    changeallProjects(){
+        let allProjects_serialized = JSON.stringify(projects.allProjects);
+        localStorage.setItem("allProjects", allProjects_serialized);
+    },
+
+    newPopulate(){
+        Object.keys(projects.allProjects).forEach((key) => {
+            projects.printTodos(key);
+        })
+    },
 }
 
 PubSub.Subscribe("creatingProjects", projects.createProject);
@@ -151,3 +213,5 @@ PubSub.Subscribe("gettingDetails", projects.getDetails);
 PubSub.Subscribe("gettingEdits", projects.getEdits);
 PubSub.Subscribe("editingTodos", projects.editTodos);
 PubSub.Subscribe("removingProjects", projects.removeProject);
+PubSub.Subscribe("sendingJSON", projects.sendJSON);
+PubSub.Subscribe("gettingJSON", projects.getJSON);
