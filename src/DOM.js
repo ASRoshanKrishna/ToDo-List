@@ -84,6 +84,7 @@ function NewTodo(){
         form.reset();
         dialog.close();
     }
+    PubSub.Publish("settingLocal", title);
 }
 
 function del(elid, elValue){
@@ -103,7 +104,6 @@ function details(projectName, todo){
 
 function edit(projectName, todo){
     const arr = [projectName, todo];
-    // console.log(arr)
     PubSub.Publish("gettingEdits", arr);
 }
 
@@ -162,8 +162,6 @@ function editTodo(){
     const d = new Date();
     const dc = format(d, "yyyy-MM-dd")
     const checkdue = dueDate.value>=dc;
-    // newArr = [projectName.className, title.className, projectName.value, title.value, description.value, dueDate.value, false, prog];
-    // console.log(newArr)
     if(projectName.value && title.value && description.value && dueDate.value && prog){
         if(checkdue==false){
             alert("You cannot create a ToDo for the past!!")
@@ -238,7 +236,6 @@ function populateContentinDOM(element){
 function populateProjects(key){
     const projli = document.createElement('li');
     projli.classList.add(`${key}`);
-    // projli.classList.add('projectli');
     projli.innerHTML = `<span id="${key}" class="projectli">${key}</span> <button class="rmv btn1" id="${key}" type="button"><i id="rmvp" class="fa fa-trash"></i></button>`;
     projectSection.append(projli);
 }
@@ -263,7 +260,6 @@ itemSection.addEventListener('click', function(event){
 
 itemSection.addEventListener('change', function(event){
     if(event.target && event.target.classList.contains('check')){
-        // console.log(event.target.id, event.target.value);
         chStatus(event.target.id, event.target.value);
     }
 })
@@ -276,7 +272,6 @@ itemSection.addEventListener('click', function(event){
 
 itemSection.addEventListener('click', function(event){
     if(event.target && event.target.classList.contains('edit')){
-        // console.log(`Editing ${event.target.value}`);
         edit(event.target.id, event.target.value);
     }
 })
@@ -284,14 +279,12 @@ itemSection.addEventListener('click', function(event){
 
 projectSection.addEventListener('click', function(event){
     if(event.target && event.target.classList.contains("projectli")){
-        // console.log(event.target.id)
         PubSub.Publish("callPrintTodos", event.target.id);
     }
 })
 
 projectSection.addEventListener('click', function(event){
     if(event.target && event.target.id == 'rmvp'){
-        // console.log(event.target.parentNode.id);
         PubSub.Publish("removingProjects", event.target.parentNode.id);
     }
 })

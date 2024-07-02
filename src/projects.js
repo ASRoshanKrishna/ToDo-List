@@ -12,7 +12,6 @@ const projects = {
         console.log(`creating a project ${projectName} with todo ${todo.title}`);
         projects.allProjects[projectName] = projects.allProjects[projectName] || [];
         projects.allProjects[projectName].push(todo);
-        projects.changeallProjects();
         console.log(projects.allProjects);
         projects.printTodos(projectName);
     },
@@ -30,7 +29,6 @@ const projects = {
     },
 
     removeProject(element){
-        // console.log(element)
         let prevProj = "";
         Object.keys(projects.allProjects).forEach((key) => {
             console.log(prevProj)
@@ -67,15 +65,11 @@ const projects = {
     },
 
     getDetails(arr){
-        // console.log(arr);
         const pjName = arr[0];
         const tdName = arr[1];
-        // console.log(a,b)
-        // console.log(projects.allProjects[a])
         projects.allProjects[pjName].forEach(element => {
             if(element.title == tdName){
                 const arr1 = [element.project, element.title, element.description, element.dueDate, element.priority];
-                // console.log(arr1);
                 PubSub.Publish("sendingDetails", arr1);
                 return;
             }
@@ -83,13 +77,11 @@ const projects = {
     },
 
     getEdits(arr){
-        // console.log(arr)
         const pjName = arr[0];
         const tdName = arr[1];
         projects.allProjects[pjName].forEach(element => {
             if(element.title == tdName){
                 const arr1 = [element.project, element.title, element.description, element.dueDate, element.priority];
-                // console.log(arr1);
                 PubSub.Publish("sendingEdits", arr1);
                 return;
             }
@@ -99,7 +91,6 @@ const projects = {
     editTodos(arr){
         const pjName = arr[0];
         const tdName = arr[1];
-        // console.log(pjName, tdName);
         projects.allProjects[pjName].forEach(element => {
             if(element.title == tdName){
                 element.project = arr[2];
@@ -107,7 +98,6 @@ const projects = {
                 element.description = arr[4];
                 element.dueDate = arr[5];
                 element.priority = arr[7];
-                // console.log(element);
                 projects.printTodos(element.project);
             }
         })
@@ -130,12 +120,6 @@ const projects = {
     printProjects(projectSection){
         Object.keys(projects.allProjects).forEach(key => {
             if(Object.keys(projects.allProjects[key]).length){
-                // const projli = document.createElement('li');
-                // projli.classList.add(`${key}`);
-                // projli.id = "projectli";
-                // // projli.classList.add('projectli');
-                // projli.innerHTML = key;
-                // projectSection.append(projli);
                 PubSub.Publish("printingProjects", key);
             }
         });    
@@ -163,7 +147,7 @@ const projects = {
         PubSub.Publish("creatingTodos", arr);
 
         let arr1 = ["ToDo", 
-                "Complete your first task!",
+                "Complete task",
                 "Once you've finished your first task you can click the checkbox next to the task to mark it as complete. A completed task will not be deleted unless you opt to.",
                 "2030-01-01",
                 false, 
@@ -180,10 +164,7 @@ const projects = {
 
         PubSub.Publish("creatingTodos", arr2);
 
-        // let allProjects_serialized = JSON.stringify(projects.allProjects);
-        // localStorage.setItem("allProjects", allProjects_serialized);
         PubSub.Publish("callPrintTodos", arr[0]);
-        // PubSub.Publish("gettingJSON", 'dummy');
     },
 
     getJSON(dummy){
@@ -193,7 +174,7 @@ const projects = {
         projects.newPopulate();
     },
 
-    changeallProjects(){
+    changeallProjects(dummy){
         let allProjects_serialized = JSON.stringify(projects.allProjects);
         localStorage.setItem("allProjects", allProjects_serialized);
     },
@@ -215,3 +196,4 @@ PubSub.Subscribe("editingTodos", projects.editTodos);
 PubSub.Subscribe("removingProjects", projects.removeProject);
 PubSub.Subscribe("sendingJSON", projects.sendJSON);
 PubSub.Subscribe("gettingJSON", projects.getJSON);
+PubSub.Subscribe("settingLocals", projects.changeallProjects);

@@ -172,7 +172,6 @@ b{
     grid-column: 2;
     grid-template-rows: 1fr 4fr;
     background-color: #f8fafc;
-    /* padding: 15px; */
 }
 
 .todotitle{
