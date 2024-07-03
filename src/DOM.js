@@ -84,7 +84,7 @@ function NewTodo(){
         form.reset();
         dialog.close();
     }
-    PubSub.Publish("settingLocal", title);
+    PubSub.Publish("settingLocals", addnew);
 }
 
 function del(elid, elValue){
